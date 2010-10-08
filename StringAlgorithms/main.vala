@@ -4,9 +4,10 @@ using GLib;
 namespace StringAlgorithms {
 	
 	public enum Algorithms {
-		BRUTE_FORCE = 0,
+		BRUTE_FORCE,
 		SHIFT_ADD;
 		
+		//TODO there should be a better way to get the length
 		public int length(){
 			return 2;
 		}
@@ -18,7 +19,7 @@ namespace StringAlgorithms {
 		String a,b;
 		a = new String("test");
 		b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj");
-				
+		
 		test(a,b,timer);
 		
 		//a =new String("",algorithms.SHIFT_ADD);
@@ -40,29 +41,34 @@ namespace StringAlgorithms {
 		
 		public char[] data;
 		
-		public delegate bool Alg(String o);
+		//TODO: fix warning
+		private static delegate bool Alg(String o);
 		
-		//public Alg[] algs = new Alg[Algorithms.length()];
-		//private Alg[] algs = new Alg[2];
-		
-		//algs[0] = (o) => {return true;};
-		
-		public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {
-			data = b.to_utf8();
-			@delegate = moot;
+		private static Alg[] algs;
+				
+		private static void setup(){
+			//TODO: Algorithms.length() should work
+			algs= new Alg[Algorithms.BRUTE_FORCE.length()];
+			algs[Algorithms.BRUTE_FORCE] = (Alg) bruteforce;
+			algs[Algorithms.SHIFT_ADD] = (Alg) shift_add;
 		}
 		
-		
-		public Alg @delegate;
-		
-		private bool moot(String o){return true;}
-		
+		public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {
+			if (algs == null){
+				setup();
+			}
+			data = b.to_utf8();
+			@delegate = algs[Algorithm];
+		}
+				
+		static Alg @delegate;
+				
+		//TODO: maybe we could make contains an Alg delegate directly, without proxying through "@delegate"
 		public bool contains(String o){
 			return @delegate(o);
 		}
 		
-		public bool bruteforce(String o){//(a) => 
-		{
+		private bool bruteforce(String o){
 			int i=0 ,j;
 			foreach (char c in data){
 				j=i;
@@ -78,7 +84,11 @@ namespace StringAlgorithms {
 				i++;
 			}
 			return false;
+		
 		}
+		
+		private bool shift_add(String o){
+			return true;
 		}
 	}
 }
