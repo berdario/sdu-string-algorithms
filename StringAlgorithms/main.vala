@@ -43,6 +43,7 @@ namespace StringAlgorithms {
 		
 		//TODO: fix warning
 		private static delegate bool Alg(String o);
+		private delegate bool Algnotstatic(String o);
 		
 		private static Alg[] algs;
 				
@@ -58,17 +59,35 @@ namespace StringAlgorithms {
 				setup();
 			}
 			data = b.to_utf8();
-			@delegate = algs[Algorithm];
+
+			//@delegate = algs[Algorithm];
+			@delegate = bruteforce;
 		}
-				
-		static Alg @delegate;
+						
+		Algnotstatic @delegate;
 				
 		//TODO: maybe we could make contains an Alg delegate directly, without proxying through "@delegate"
 		public bool contains(String o){
+			
+			/*stdout.printf("\n%p\n",&data[0]);
+			stdout.printf("%p\n",&o.data[0]);
+			String newo = new String((string) o.data);*/
+			//usestring(newo);
+			
+			//return @delegate(newo);
 			return @delegate(o);
 		}
 		
+		public void usestring(String o){
+			stdout.printf((string) o.data);
+		}
+		
 		private bool bruteforce(String o){
+			
+			/*stdout.printf("inside bruteforce\n");
+			stdout.printf("\n%p\n",&data[0]);
+			stdout.printf("data: "+(string) data+"\nother: "+(string) o.data+"\n");*/
+			
 			int i=0 ,j;
 			foreach (char c in data){
 				j=i;
