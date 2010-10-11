@@ -1,6 +1,5 @@
 // project created on 06.10.2010 at 11:56
 using GLib;
-using Gee;
 
 namespace StringAlgorithms {
 	
@@ -43,56 +42,45 @@ namespace StringAlgorithms {
 		
 		public char[] data;
 		
-		//TODO: fix warning
-		private static delegate bool Alg(String o);
-		private delegate bool Algnotstatic(String o);
+		public delegate int Alg(String o, out int pos);
+		private delegate bool ContainsAlg(String o);
 		
-		public delegate int Matchingalg(String o, out int pos);
+		private struct AlgWrapper{
+			public Alg alg;
+		}
 		
-		private static Alg[] algs;
-				
-		private static void setup(){
-			//TODO: Algorithms.length() should work
-			algs= new Alg[Algorithms.BRUTE_FORCE.length()];
-			algs[Algorithms.BRUTE_FORCE] = (Alg) bruteforce;
-			algs[Algorithms.SHIFT_ADD] = (Alg) shift_add;
+		private struct ContainsAlgWrapper{
+			public ContainsAlg alg;
+		}
+		
+		//TODO: Algorithms.length() should work
+		private static AlgWrapper[] algs = new AlgWrapper[Algorithms.BRUTE_FORCE.length()];
+		private static ContainsAlgWrapper[] contains_algs = new ContainsAlgWrapper[Algorithms.BRUTE_FORCE.length()];
+		
+		private void setup_algs(){
+			algs[Algorithms.BRUTE_FORCE] = AlgWrapper(){ alg = bruteforce };
+			algs[Algorithms.SHIFT_ADD] = AlgWrapper(){ alg = shift_add };
+			
+			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = bruteforce_contains };
 		}
 		
 		public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {
-			if (algs == null){
-				setup();
-			}
+			setup_algs();
+			
 			data = b.to_utf8();
 
-			//@delegate = algs[Algorithm];
-			@delegate = bruteforce_contains;
-			match = bruteforce;
+			match = algs[Algorithm].alg;
+			@delegate = contains_algs[Algorithm].alg;
 		}
 						
-		Algnotstatic @delegate;
-		public Matchingalg match;
+		ContainsAlg @delegate;
+		public Alg match;
 				
-		//TODO: maybe we could make contains an Alg delegate directly, without proxying through "@delegate"
 		public bool contains(String o){
-			
-			/*stdout.printf("\n%p\n",&data[0]);
-			stdout.printf("%p\n",&o.data[0]);
-			String newo = new String((string) o.data);*/
-			//usestring(newo);
-			
-			//return @delegate(newo);
 			return @delegate(o);
 		}
 		
-		public void usestring(String o){
-			stdout.printf((string) o.data);
-		}
-		
 		private bool bruteforce_contains(String o){
-			/*stdout.printf("inside bruteforce\n");
-			stdout.printf("\n%p\n",&data[0]);
-			stdout.printf("data: "+(string) data+"\nother: "+(string) o.data+"\n");*/
-			
 			int i=0 ,j;
 			foreach (char c in data){
 				j=i;
