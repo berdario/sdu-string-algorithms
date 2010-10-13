@@ -46,5 +46,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.vala" />
+    <Compile Include="kmp.vala" />
+    <Compile Include="bm.vala" />
+    <Compile Include="bruteforce.vala" />
+    <Compile Include="shiftand.vala" />
   </ItemGroup>
 </Project>
