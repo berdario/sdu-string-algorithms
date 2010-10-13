@@ -6,7 +6,7 @@ namespace StringAlgorithms {
 	
 	public enum Algorithms {
 		BRUTE_FORCE,
-		SHIFT_ADD;
+		SHIFT_AND;
 		
 		//TODO there should be a better way to get the length
 		public int length(){
@@ -18,9 +18,12 @@ namespace StringAlgorithms {
 		Timer timer = new Timer();
 
 		String a,b;
+		String e = new String("sfdhhdf");
+		String f = new String("sdgdg");
 		a = new String("test");
-		b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj",Algorithms.SHIFT_ADD);
-		
+		b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj");//,Algorithms.SHIFT_AND);
+		String c = new String("dfsdhah");
+		String d = new String("zdshd");
 		test(a,b,timer);
 		
 		//a =new String("",algorithms.SHIFT_ADD);
@@ -60,10 +63,10 @@ namespace StringAlgorithms {
 		
 		private void setup_algs(){
 			algs[Algorithms.BRUTE_FORCE] = AlgWrapper(){ alg = bruteforce };
-			algs[Algorithms.SHIFT_ADD] = AlgWrapper(){ alg = shift_add };
+			algs[Algorithms.SHIFT_AND] = AlgWrapper(){ alg = shift_and };
 			
 			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = bruteforce_contains };
-			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = (o) => {return shift_add(o, null)>0;} };
+			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = (o) => {return shift_and(o, null)>0;} };
 		}
 		
 		public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {
@@ -125,7 +128,7 @@ namespace StringAlgorithms {
 		
 			Gee.HashMap<int, ArrayList<bool>> masks = null;
 		
-			private int shift_add(String pat, out int pos){
+			private int shift_and(String pat, out int pos){
 				
 				int result = 0;
 				
@@ -237,6 +240,71 @@ namespace StringAlgorithms {
 				}
 				return result;
 			}
+			
+			private int kmp(String o, out int pos){
+
+             int n = o.data.length;
+             int i = 0;
+             int j = -1;
+             int[] N = new int[n+1];
+             N[i] = j;
+
+             //building the table
+             while(i < n){
+                 while(j >= 0 && (o.data[j] != o.data[i])){
+                     j = N[j];
+                 }
+                 i++;
+                 j++;
+                 N[i] = j;
+
+             }
+
+             foreach (int c in N){
+                 stdout.printf("%i\n", c);
+             }
+
+             //searching
+             i = 0;
+             j = 0;
+             int matches = 0;
+             while(i < data.length){
+                 while(j >= 0 && (data[i] != o.data[j])){
+                     j = N[j];
+                 }
+                 i++;
+                 j++;
+
+                 if(j == n){
+                     matches++;
+                     j = N[j];
+                 }
+             }
+
+             stdout.printf("%i\n", matches);
+             return matches;
+         }
+
+         private int bm(String o, out int pos){
+             int ALPHABET_SIZE = 1024;
+             int[] a = new int[ALPHABET_SIZE];
+
+             //Preprocessing for bad characters
+             for(int i = 0; i < ALPHABET_SIZE; i++){
+                 a[i] = -1;
+             }
+
+             for(int j = o.data.length - 1; j>= 0; j-- ){
+                 if(a[o.data[j]] < 0){
+                     a[o.data[j]] = j;
+                     stdout.printf("%i\n", j);
+                 }
+             }
+
+             //Preprocessing for good suffix
+
+             return -1;
+         }
 		
 		
 	}
