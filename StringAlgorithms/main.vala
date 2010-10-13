@@ -2,99 +2,99 @@
 using GLib;
 using Gee;
 
-namespace StringAlgorithms {
-	
-	public enum Algorithms {
-		BRUTE_FORCE,
-		SHIFT_AND;
-		
-		//TODO there should be a better way to get the length
-		public int length(){
-			return 2;
-		}
-	}
-	
-	int main (string[] args) {		
-		Timer timer = new Timer();
 
-		String a,b;
-		String e = new String("sfdhhdf");
-		String f = new String("sdgdg");
-		a = new String("test");
-		b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj");//,Algorithms.SHIFT_AND);
-		String c = new String("dfsdhah");
-		String d = new String("zdshd");
-		test(a,b,timer);
-		
-		//a =new String("",algorithms.SHIFT_ADD);
-		//b =new String("",algorithms.SHIFT_ADD);
-		return 0;
+	
+public enum Algorithms {
+	BRUTE_FORCE,
+	SHIFT_AND;
+	
+	//TODO there should be a better way to get the length
+	public int length(){
+		return 2;
+	}
+}
+
+int main (string[] args) {		
+	Timer timer = new Timer();
+
+	String a,b;
+	a = new String("test");
+	b = new String("bycjfdtestsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj",Algorithms.SHIFT_AND);
+	test(a,b,timer);
+	
+	//a =new String("",algorithms.SHIFT_ADD);
+	//b =new String("",algorithms.SHIFT_ADD);
+	return 0;
+}
+
+void test(String a, String b, Timer timer){
+	int result;
+	int pos;
+	timer.reset();
+	timer.start();
+	result = b.match(a,out pos);
+	timer.stop();
+	stdout.printf("string a is"+ ((result>0)?(" contained "+result.to_string()+" times"):" not") +" contained in string b\n");
+	stdout.printf("computation performed in %f milliseconds\n",timer.elapsed()*1000);
+}
+	
+public class String: GLib.Object {
+	
+	public char[] data;
+	
+	public delegate int Alg(char[] text, char[] pat, out int pos);
+	private delegate bool ContainsAlg(char[] text, char[] pat);
+	
+	private struct AlgWrapper{
+		public Alg alg;
 	}
 	
-	void test(String a, String b, Timer timer){
-		bool result;
-		int pos;
-		timer.reset();
-		timer.start();
-		result = b.match(a,out pos)>0;
-		timer.stop();
-		stdout.printf("string a is"+ (result?"":" not") +" contained in string b\n");
-		stdout.printf("computation performed in %f milliseconds\n",timer.elapsed()*1000);
+	private struct ContainsAlgWrapper{
+		public ContainsAlg alg;
 	}
+	
+	//TODO: Algorithms.length() should work
+	private static AlgWrapper[] algs = new AlgWrapper[Algorithms.BRUTE_FORCE.length()];
+	private static ContainsAlgWrapper[] contains_algs = new ContainsAlgWrapper[Algorithms.BRUTE_FORCE.length()];
+	
+	static construct{
+		algs[Algorithms.BRUTE_FORCE] = AlgWrapper(){ alg = BruteForce.bruteforce };
+		algs[Algorithms.SHIFT_AND] = AlgWrapper(){ alg = ShiftAnd.shift_and };
 		
-	public class String: GLib.Object {
+		contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = BruteForce.bruteforce_contains };
+		//contains_algs[Algorithms.SHIFT_AND] = ContainsAlgWrapper(){ alg = (o) => {return ShiftAnd.shift_and(data, o.data, null)>0;} };
+	}
+	
+	public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {
 		
-		public char[] data;
-		
-		public delegate int Alg(String o, out int pos);
-		private delegate bool ContainsAlg(String o);
-		
-		private struct AlgWrapper{
-			public Alg alg;
-		}
-		
-		private struct ContainsAlgWrapper{
-			public ContainsAlg alg;
-		}
-		
-		//TODO: Algorithms.length() should work
-		private static AlgWrapper[] algs = new AlgWrapper[Algorithms.BRUTE_FORCE.length()];
-		private static ContainsAlgWrapper[] contains_algs = new ContainsAlgWrapper[Algorithms.BRUTE_FORCE.length()];
-		
-		private void setup_algs(){
-			algs[Algorithms.BRUTE_FORCE] = AlgWrapper(){ alg = bruteforce };
-			algs[Algorithms.SHIFT_AND] = AlgWrapper(){ alg = shift_and };
-			
-			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = bruteforce_contains };
-			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = (o) => {return shift_and(o, null)>0;} };
-		}
-		
-		public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {
-			setup_algs();
-			
-			data = b.to_utf8();
+		data = b.to_utf8();
 
-			match = algs[Algorithm].alg;
-			@delegate = contains_algs[Algorithm].alg;
-		}
-						
-		ContainsAlg @delegate;
-		public Alg match;
-				
-		public bool contains(String o){
-			return @delegate(o);
-		}
-		
-		private bool bruteforce_contains(String o){
+		match_alg = algs[Algorithm].alg;
+		contains_alg = contains_algs[Algorithm].alg;
+	}
+					
+	private Alg match_alg;
+	public int match(String o, out int pos){
+		return match_alg(data, o.data, out pos);
+	}
+			
+	ContainsAlg contains_alg;
+	public bool contains(String o){
+		return contains_alg(data, o.data);
+	}
+}
+
+namespace BruteForce{
+	private bool bruteforce_contains(char[] text, char[] pat){
 			int i=0 ,j;
-			foreach (char c in data){
+			foreach (char c in text){
 				j=i;
-				foreach (char c2 in o.data){
-					if (data[j]!=c2){
+				foreach (char c2 in pat){
+					if (text[j]!=c2){
 						break;
 					}
 					j++;
-					if (j-i>=o.data.length-1){
+					if (j-i>=pat.length-1){
 						return true;
 					}
 				}
@@ -104,18 +104,19 @@ namespace StringAlgorithms {
 		
 		}
 		
-		private int bruteforce(String o, out int pos){
+		private int bruteforce(char[] text, char[] pat, out int pos){
+			stdout.printf("bruteforce!\n");
 			int matches = 0;
 			int i=0 ,j;
-			foreach (char c in data){
+			foreach (char c in text){
 				j=i;
-				foreach (char c2 in o.data){
-					if (data[j]!=c2){
+				foreach (char c2 in pat){
+					if (text[j]!=c2){
 						break;
 					}
 					j++;
 				}
-				if (j-i>=o.data.length-1 && data[j]!=o.data[j-i]){
+				if (j-i>=pat.length-1 && text[j]!=pat[j-i]){
 					matches++;
 					if (matches == 1){
 						pos = i;
@@ -125,42 +126,46 @@ namespace StringAlgorithms {
 			}
 			return matches;
 		}
+}
+
+namespace ShiftAnd{
+	Gee.HashMap<int, ArrayList<bool>> masks = null;
 		
-			Gee.HashMap<int, ArrayList<bool>> masks = null;
-		
-			private int shift_and(String pat, out int pos){
-				
+			private int shift_and(char[] text, char[] pat, out int pos){
+				stdout.printf("shiftand!\n");
 				int result = 0;
-				
-				bool[,] table = new bool[data.length+1,pat.data.length];
+				int m = text.length;
+				int n = pat.length;
+				bool[,] table = new bool[m+1,n];
 				//var table = new ArrayList<ArrayList<bool>>();
 				masks = masks ?? create_masks(pat);
-				bool[] column = new bool[pat.data.length];
+				bool[] column = new bool[n];
 
-				for (int i = 0; i<pat.data.length+1; i++){
+				for (int i = 0; i<n+1; i++){
 					table[0,i] = false;
 				}
 				
-				for (int j = 1; j<=data.length; j++){
+				for (int j = 1; j<=m; j++){
 
 					column[0] = true;
 					//TODO check pat > 1
-					for (int i=1; i<pat.data.length; i++){
+					for (int i=1; i<n; i++){
 						column[i] = table[j-1,i-1];
 						//if (table[j-1,i]) stdout.printf("1 ");
 						//else stdout.printf("0 ");
 					}
 					//stdout.printf("\n");
-					/*column = tmp_column[1:pat.data.length];
-					//column[pat.data.length-1] = tmp_column[0];
+					/*column = tmp_column[1:n];
+					//column[n-1] = tmp_column[0];
 					column += tmp_column[0];*/
 					
+
 															
 					//print_array(column);
 
-					//var j_mask = masks[data[j]] ?? new ArrayList<bool>();
-					var j_mask = masks[data[j]];
-					/*stdout.printf(@"$(data[j])\n");
+					//var j_mask = masks[text[j]] ?? new ArrayList<bool>();
+					var j_mask = masks[text[j]];
+					/*stdout.printf(@"$(text[j])\n");
 					if (j_mask != null){
 						stdout.printf(@"$(j_mask.size)\n");
 						foreach (bool b in j_mask){
@@ -170,17 +175,17 @@ namespace StringAlgorithms {
 						stdout.printf("\n");
 					}*/
 
-					for (int i=0; i<pat.data.length; i++){
-						//stdout.printf("%d %d\n",pat.data.length,(j_mask!=null)?j_mask.size:0);
+					for (int i=0; i<n; i++){
+						//stdout.printf("%d %d\n",n,(j_mask!=null)?j_mask.size:0);
 						//bool mask_result = (j_mask[i]==null) ? j_mask[i] : false;
 						bool temp = (j_mask!=null)? j_mask[i] : false;
 						table[j,i] = column[i] && temp;
 					}
 					
-					if (table[j,pat.data.length-1]){
+					if (table[j,n-1]){
 						result++;
 						if (result == 1){
-							pos = j-pat.data.length+1;
+							pos = j-n+1;
 						}
 					}
 				}
@@ -207,19 +212,19 @@ namespace StringAlgorithms {
 				stdout.printf("\n");
 			}
 			
-			public void preprocess(String pat){
+			public void preprocess(char[] pat){
 				masks = create_masks(pat);
 			}
 			
-			private Gee.HashMap<int, ArrayList<bool>> create_masks(String pat){
+			private Gee.HashMap<int, ArrayList<bool>> create_masks(char[] pat){
 				var result = new Gee.HashMap<int, ArrayList<bool>>();
 				char[] encountered = {};
-				//bool[] mask = new bool[pat.data.length];
-				foreach (char c in pat.data){
+				//bool[] mask = new bool[n];
+				foreach (char c in pat){
 					var mask = new ArrayList<bool>();
 					if (!(c in encountered)){
 						//int i = 0;
-						foreach (char cpat in pat.data){
+						foreach (char cpat in pat){
 							//stdout.printf(@"$cpat $i\n");
 							mask.add(c==cpat);
 							//mask[i] = c==cpat;
@@ -240,10 +245,12 @@ namespace StringAlgorithms {
 				}
 				return result;
 			}
-			
-			private int kmp(String o, out int pos){
+}
 
-             int n = o.data.length;
+namespace Kmp{
+	private int kmp(char[] text, char[] pat, out int pos){
+
+             int n = pat.length;
              int i = 0;
              int j = -1;
              int[] N = new int[n+1];
@@ -251,7 +258,7 @@ namespace StringAlgorithms {
 
              //building the table
              while(i < n){
-                 while(j >= 0 && (o.data[j] != o.data[i])){
+                 while(j >= 0 && (pat[j] != pat[i])){
                      j = N[j];
                  }
                  i++;
@@ -268,8 +275,8 @@ namespace StringAlgorithms {
              i = 0;
              j = 0;
              int matches = 0;
-             while(i < data.length){
-                 while(j >= 0 && (data[i] != o.data[j])){
+             while(i < text.length){
+                 while(j >= 0 && (text[i] != pat[j])){
                      j = N[j];
                  }
                  i++;
@@ -284,8 +291,10 @@ namespace StringAlgorithms {
              stdout.printf("%i\n", matches);
              return matches;
          }
+}
 
-         private int bm(String o, out int pos){
+namespace Bm{
+	private int bm(char[] text, char[] pat, out int pos){
              int ALPHABET_SIZE = 1024;
              int[] a = new int[ALPHABET_SIZE];
 
@@ -294,9 +303,9 @@ namespace StringAlgorithms {
                  a[i] = -1;
              }
 
-             for(int j = o.data.length - 1; j>= 0; j-- ){
-                 if(a[o.data[j]] < 0){
-                     a[o.data[j]] = j;
+             for(int j = pat.length - 1; j>= 0; j-- ){
+                 if(a[pat[j]] < 0){
+                     a[pat[j]] = j;
                      stdout.printf("%i\n", j);
                  }
              }
@@ -305,7 +314,4 @@ namespace StringAlgorithms {
 
              return -1;
          }
-		
-		
-	}
 }
