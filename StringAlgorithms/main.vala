@@ -25,7 +25,7 @@ int main (string[] args) {
 	String a,b;
 	a = new String("test");
 	b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj"
-		,Algorithms.SHIFT_AND);
+		,Algorithms.BM);
 	test(a,b,timer);
 	
 	return 0;

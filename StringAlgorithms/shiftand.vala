@@ -1,7 +1,7 @@
 using Gee;
 
 namespace ShiftAnd{
-	Gee.HashMap<int, ArrayList<bool>> masks = null;
+	HashMap<int, ArrayList<bool>> masks = null;
 		
 			private int shift_and(char[] text, char[] pat, out int pos){
 				int result = 0;
@@ -87,8 +87,8 @@ namespace ShiftAnd{
 				masks = create_masks(pat);
 			}
 			
-			private Gee.HashMap<int, ArrayList<bool>> create_masks(char[] pat){
-				var result = new Gee.HashMap<int, ArrayList<bool>>();
+			private HashMap<int, ArrayList<bool>> create_masks(char[] pat){
+				var result = new HashMap<int, ArrayList<bool>>();
 				char[] encountered = {};
 				//bool[] mask = new bool[n];
 				foreach (char c in pat){
