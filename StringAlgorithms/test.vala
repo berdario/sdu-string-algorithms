@@ -1,29 +1,48 @@
 using Strings;
-
-String a = null;
-String b = null;
-Timer timer;
 	
 void test(){
-	timer = new Timer();
+	Timer timer = new Timer();
+	String pattern;
+	String text;
 
+	long len, rint;
 	var contents = new FileContents();
-	foreach (string content in contents){
-		//TODO
+	bool outcome;
+	foreach (string file_content in contents){
+		len = file_content.length;
+		if (len > 2147483647){
+			error("I have problems handling a file longer than 2147483647 chars");
+		}
+		rint = Test.rand_int_range((int)len/2,(int)len*7/8);
+		pattern = new String(file_content[rint:rint+len/8]);
+		
+		message(@"position of the selected pattern: $rint");
+		
+		int[] result = new int[4];
+		int[] pos = new int[4];
+		for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
+			text = new String(file_content,(Algorithms) alg);
+			
+			timer.reset();
+			timer.start();
+			
+			result[alg] = text.match(pattern, out pos[alg]);
+			timer.stop();
+			
+			outcome = result[alg]>0;
+			message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(result[alg]) time(s) ":"")+"in the text\n");
+			if (outcome) message(@"the position of the first match is at char number $(pos[alg])\n");
+			message("computation performed in %f milliseconds\n",timer.elapsed()*1000);
+			
+		}
+		assert(result[Algorithms.KMP] == result[Algorithms.BRUTE_FORCE]);
+		assert(result[Algorithms.BM] == result[Algorithms.BRUTE_FORCE]);
+		assert(result[Algorithms.SHIFT_AND] == result[Algorithms.BRUTE_FORCE]);
 	}
 	
-	a = new String("test");
+	/*a = new String("test");
 	b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj"
 		,Algorithms.BRUTE_FORCE);
-	
-	
-	//string file_content;
-	int len = 9999;//file_content.length;
-	int rint = Test.rand_int_range(len/2,len*7/8);
-	//string test_string = file_content[rint:rint+len/8];
-	string test_string = "the brown fox jumped over the lazy dog";
-	
-	
 	
 	int result;
 	int pos;
@@ -34,7 +53,7 @@ void test(){
 	stdout.printf("\nstring a is"+ ((result>0)?"":" not") +" contained "+((result>0)?@"$result time(s) ":"")+"in string b\n");
 	if (result>0) stdout.printf(@"the position of the first match is at char number $pos\n");
 	stdout.printf("computation performed in %f milliseconds\n",timer.elapsed()*1000);
-	assert(result>0);
+	assert(result>0);*/
 }
 
 private class FileContents {
