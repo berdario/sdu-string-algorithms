@@ -3,7 +3,9 @@ using Gee;
 namespace ShiftAnd{
 	HashMap<int, ArrayList<bool>> masks = null;
 		
-			private int shift_and(char[] text, char[] pat, out int pos){
+			private int shift_and(char[] text, char[] pat, out int pos)
+				requires (pat.length > 1)
+				{
 				int result = 0;
 				int m = text.length;
 				int n = pat.length;

@@ -12,7 +12,7 @@ namespace Bm{
 		    a[i] = -1;
 		}
 		
-		for(int j = pat.length - 1; j>= 0; j-- ){
+		for(int j = n; j>= 0; j-- ){
 		    if(a[pat[j]] < 0){
 		        a[pat[j]] = j;
 		        //stdout.printf("%i\n", j);
