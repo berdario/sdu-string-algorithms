@@ -21,7 +21,7 @@ namespace Strings{
 	}
 	
 	
-	int main (string[] args) {	
+	int main (string[] args) {
 		Test.init(ref args);
 		Test.add_func("/string_algorithms",test);
 		return Test.run();

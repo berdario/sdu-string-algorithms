@@ -30,6 +30,18 @@
     <Build>
       <Build target="Bin" />
     </Build>
+    <Includes>
+      <Includes>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+      </Includes>
+    </Includes>
+    <Libs>
+      <Libs>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+      </Libs>
+    </Libs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>
