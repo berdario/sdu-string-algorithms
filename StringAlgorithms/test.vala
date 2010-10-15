@@ -8,7 +8,7 @@ void test(){
 	long len, rint;
 	var contents = new FileContents();
 	bool outcome;
-	foreach (string file_content in contents){
+	/*foreach (string file_content in contents){
 		len = file_content.length;
 		if (len > 2147483647){
 			error("I have problems handling a file longer than 2147483647 chars");
@@ -21,9 +21,9 @@ void test(){
 		int[] result = new int[4];
 		int[] pos = new int[4];
 		for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
-			/*if (alg == Algorithms.SHIFT_AND || alg == Algorithms.BM){
+			if (alg == Algorithms.SHIFT_AND || alg == Algorithms.BRUTE_FORCE || alg == Algorithms.KMP){
 				continue;
-			}*/
+			}
 			
 			text = new String(file_content,(Algorithms) alg);
 			
@@ -41,25 +41,26 @@ void test(){
 			//Thread.usleep(2000000);
 			
 		}
-		assert(result[Algorithms.KMP] == result[Algorithms.BRUTE_FORCE]);
+		//assert(result[Algorithms.KMP] == result[Algorithms.BRUTE_FORCE]);
 		//assert(result[Algorithms.BM] == result[Algorithms.BRUTE_FORCE]);
 		//assert(result[Algorithms.SHIFT_AND] == result[Algorithms.BRUTE_FORCE]);
-	}
+	}*/
 	
-	/*a = new String("test");
-	b = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj"
-		,Algorithms.BRUTE_FORCE);
+	pattern = new String("test");
+	text = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj"
+		,Algorithms.BM);
 	
 	int result;
 	int pos;
 	timer.reset();
 	timer.start();
-	result = b.match(a,out pos);
+	result = text.match(pattern,out pos);
 	timer.stop();
 	stdout.printf("\nstring a is"+ ((result>0)?"":" not") +" contained "+((result>0)?@"$result time(s) ":"")+"in string b\n");
 	if (result>0) stdout.printf(@"the position of the first match is at char number $pos\n");
 	stdout.printf("computation performed in %f milliseconds\n",timer.elapsed()*1000);
-	assert(result>0);*/
+	assert(result>0);
+	
 }
 
 private class FileContents {

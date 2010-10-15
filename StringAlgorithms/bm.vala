@@ -42,7 +42,6 @@ namespace Bm{
 			i = n;
 			h = k;
 			while (i > 0 && pat[i] == text[h]){
-				//stdout.printf(@"k=$k i=$i P=$(pat[i]) T=$(text[h])\n");
 				i--;
 				h--;
 			}
@@ -51,13 +50,12 @@ namespace Bm{
 				if (matches == 1){
 					pos = k-n;
 				}
-				k = k + n - 0;
 				
-			} else {
-				shift = a[text[h]];
-				
-				k += (shift != -1) ? n-shift : 1;
-			}
+			} 
+			
+			shift = a[text[k+n+1]];
+			k += (shift != -1) ? n-shift+1 : 1;
+			
 		}
 		return matches;
 	}
