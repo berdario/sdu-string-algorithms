@@ -59,9 +59,9 @@
   <ItemGroup>
     <Compile Include="main.vala" />
     <Compile Include="kmp.vala" />
-    <Compile Include="bm.vala" />
     <Compile Include="bruteforce.vala" />
     <Compile Include="shiftand.vala" />
     <Compile Include="test.vala" />
+    <Compile Include="bmh.vala" />
   </ItemGroup>
 </Project>

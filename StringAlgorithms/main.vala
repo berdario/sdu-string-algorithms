@@ -3,7 +3,7 @@ using GLib;
 using Gee;
 using BruteForce;
 using Kmp;
-using Bm;
+using Bmh;
 using ShiftAnd;
 
 namespace Strings{
@@ -11,7 +11,7 @@ namespace Strings{
 	public enum Algorithms {
 		BRUTE_FORCE,
 		KMP,
-		BM,
+		BMH,
 		SHIFT_AND;
 		
 		//TODO there should be a better way to get the length
@@ -51,7 +51,7 @@ namespace Strings{
 		static construct{
 			algs[Algorithms.BRUTE_FORCE] = AlgWrapper(){ alg = bruteforce };
 			algs[Algorithms.KMP] = AlgWrapper(){ alg = kmp };
-			algs[Algorithms.BM] = AlgWrapper(){ alg = bm };
+			algs[Algorithms.BMH] = AlgWrapper(){ alg = bmh };
 			algs[Algorithms.SHIFT_AND] = AlgWrapper(){ alg = shift_and };
 			
 			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = bruteforce_contains };
