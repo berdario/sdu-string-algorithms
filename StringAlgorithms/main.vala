@@ -1,6 +1,7 @@
 // project created on 06.10.2010 at 11:56
 using GLib;
 using Gee;
+
 using BruteForce;
 using Kmp;
 using Bmh;

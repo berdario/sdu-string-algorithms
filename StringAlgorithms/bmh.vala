@@ -45,14 +45,14 @@ namespace Bmh{
 		int matches = 0;
 		
 		int k = 0;
-		int shift, i;
+		int shift, i, h;
 		
 		while (k<=m-n){
 			i = n-1;
-			//h = k+n;
-			while (i > 0 && pat[i] == text[k+i]){
+			h = k+n-1;
+			while (i > 0 && pat[i] == text[h]){
 				i--;
-				//h--;
+				h--;
 			}
 			
 			if (i == 0){
