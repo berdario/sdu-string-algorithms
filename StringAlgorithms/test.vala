@@ -83,7 +83,7 @@ void test(){
 				result = text.match(pattern);
 				timer.stop();
 				
-				results[i,alg] = timer.elapsed();
+				results[i,alg] = timer.elapsed()*1000;
 				num_results[alg] = result.length;
 				outcome = num_results[alg]>0;
 				message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(num_results[alg]) time(s) ":"")+"in the text");
@@ -179,7 +179,7 @@ public void output(string filename, double[,] results){
 		if (file.query_exists()){}//everything ok
 		var data_stream = new DataOutputStream (file_stream);
 		
-		string data = "=cluster,brute force,kmp,horspool,shift and\n=table,\n";
+		string data = "=cluster,brute force,kmp,horspool,shift and\nylabel=average search time\nyformat=%g ms\n=table,\n";
 		for (int i=0; i<lengths.length; i++){
 			data += @"$(lengths[i])chars";
 			for (int j=0; j<Algorithms.BRUTE_FORCE.length(); j++){
