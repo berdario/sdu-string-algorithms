@@ -7,8 +7,12 @@ void test(){
 
 	long len, rint;
 	var contents = new FileContents();
+	//string[] filenames = contents.files;
+	string name, file_content;
 	bool outcome;
-	foreach (string file_content in contents){
+	foreach (string[] file in contents){
+		name = file[0];
+		file_content = file[1];
 		len = file_content.length;
 		if (len > 2147483647){
 			error("I have problems handling a file longer than 2147483647 chars");
@@ -16,7 +20,7 @@ void test(){
 		rint = Test.rand_int_range((int)len/2,(int)len*7/8);
 		pattern = new String(file_content[rint:rint+len/8]);
 		
-		message(@"position of the selected pattern: $rint\n");
+		message(@"position of the selected pattern for file $name: $rint\n");
 		
 		int[] result = new int[4];
 		int[] pos = new int[4];
@@ -83,9 +87,10 @@ private class FileContents {
 	}
 	
 	
-	public string? next_value(){
+	public string[]? next_value(){
 		//TODO implements with the read_until_async
 		string content = "";
+		string[] result = new string[2];
 		
 		for (int i=0; i<files.length; i++){
 			if (files[i] != null){
@@ -103,8 +108,10 @@ private class FileContents {
 						error (e.message);
 					}
 				}
+				result[0] = files[i];
+				result[1] = content;
 			 	files[i] = null;
-			 	return content;
+			 	return result;
 			 }
 		}
 		
