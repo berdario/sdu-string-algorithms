@@ -1,6 +1,11 @@
 using Strings;
 	
+int[] lengths;
+	
 void test(){
+	//TODO be careful
+	lengths = {4,8,16};//,128};
+	
 	Timer timer = new Timer();
 	String pattern;
 	String text;
@@ -9,7 +14,8 @@ void test(){
 	var contents = new FileContents();
 	string name, file_content;
 	bool outcome;
-	int[] lengths = {4,8,16};//,128};
+	int pattern_len;
+	
 	string pattern_repr;
 	
 	/*foreach (string file_content in contents){
@@ -37,6 +43,7 @@ void test(){
 	
 	foreach (string[] file in contents){
 		name = file[0];
+		double[,] results = new double[lengths.length,Algorithms.BRUTE_FORCE.length()];
 		file_content = file[1];
 		len = file_content.length;
 		if (len > 2147483647){
@@ -46,8 +53,9 @@ void test(){
 		rint -= rint % 32;
 		assert ((rint %32)==0);
 		
-		foreach (int pattern_len in lengths){
-
+		for (int i=0; i<lengths.length; i++ ){
+			pattern_len = lengths[i];
+			
 			pattern = new String(file_content[rint:rint+pattern_len]);
 			if (pattern_len <=128){
 				pattern_repr = (string) pattern.data;
@@ -58,6 +66,7 @@ void test(){
 			message(@"position of the selected pattern for file $name: $rint\n lenght of the pattern: $pattern_len, pattern: $pattern_repr\n");
 			
 			//int[][] result = new int[][4];
+			
 			int[] result;
 			int[] num_results = new int[4];
 			for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
@@ -74,6 +83,7 @@ void test(){
 				result = text.match(pattern);
 				timer.stop();
 				
+				results[i,alg] = timer.elapsed();
 				num_results[alg] = result.length;
 				outcome = num_results[alg]>0;
 				message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(num_results[alg]) time(s) ":"")+"in the text");
@@ -88,6 +98,8 @@ void test(){
 			assert(num_results[Algorithms.BMH] == num_results[Algorithms.BRUTE_FORCE]);
 			//assert(num_results[Algorithms.SHIFT_AND] == num_results[Algorithms.BRUTE_FORCE]);
 		}
+		
+		output(name,results);
 	}
 	
 	/*pattern = new String("test");
@@ -158,4 +170,27 @@ private class FileContents {
 		return null;
 	}
 
+}
+
+public void output(string filename, double[,] results){
+	var file = File.new_for_path("../../../results/"+filename+"_results");
+	try{
+		var file_stream = file.create (FileCreateFlags.NONE);
+		if (file.query_exists()){}//everything ok
+		var data_stream = new DataOutputStream (file_stream);
+		
+		string data = "=cluster,brute force,kmp,horspool,shift and\n=table,\n";
+		for (int i=0; i<lengths.length; i++){
+			data += @"$(lengths[i])chars";
+			for (int j=0; j<Algorithms.BRUTE_FORCE.length(); j++){
+				data += @",$(results[i,j])";
+			}
+			data+="\n";
+		}
+		
+		data_stream.put_string(data);
+	} catch (Error e){
+		debug("WTF");
+	}
+	
 }
