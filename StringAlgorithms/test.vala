@@ -65,7 +65,7 @@ void test(){
 
 private class FileContents {
 	
-	static string[] plaintext_files = {
+	static string[] files = {
 		"aaa.txt",
 		"alice29.txt",
 		"alphabet.txt",
@@ -74,10 +74,9 @@ private class FileContents {
 		"pi.txt",
 		"random.txt",
 		"E.coli",
-		"y.tab.c"
+		"y.tab.c",
+		"string.ps.gz"
 	};
-	
-	static string postscript = "string.ps.gz";
 		
 	public FileContents iterator(){
 		return this;
@@ -88,9 +87,9 @@ private class FileContents {
 		//TODO implements with the read_until_async
 		string content = "";
 		
-		for (int i=0; i<plaintext_files.length; i++){
-			if (plaintext_files[i] != null){
-				var file = File.new_for_path("../../../ProjectDataSets/"+plaintext_files[i]);
+		for (int i=0; i<files.length; i++){
+			if (files[i] != null){
+				var file = File.new_for_path("../../../ProjectDataSets/"+files[i]);
 				if (!file.query_exists(null)){
 					stderr.printf(@"\nApparently we are in the wrong directory: $(file.get_path())\n");
 				} else{
@@ -104,33 +103,9 @@ private class FileContents {
 						error (e.message);
 					}
 				}
-			 	plaintext_files[i] = null;
+			 	files[i] = null;
 			 	return content;
 			 }
-		}
-		
-		if (postscript != null){
-			var file = File.new_for_path("../../../ProjectDataSets/"+postscript);
-			if (!file.query_exists(null)){
-				stderr.printf(@"\nApparently we are in the wrong directory: $(file.get_path())\n");
-			} else{
-				try{
-					Converter converter = new ZlibDecompressor(ZlibCompressorFormat.GZIP);
-					var conv_stream = new ConverterInputStream (file.read(), converter);
-					var input = new DataInputStream(conv_stream);
-					
-					string line;
-					//while ((lines = input.read_until("\n\n\n", null)) != null){
-					while ((line = input.read_line(null))!= null){
-						content += line + "\n";
-					}
-				} catch (Error e) {
-					error (e.message);
-				}
-			}
-			postscript = null;
-			//print(content[0:101].replace("\r","\n"));
-			return content;
 		}
 		
 		return null;
