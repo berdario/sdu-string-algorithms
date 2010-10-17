@@ -1,5 +1,6 @@
 namespace Kmp{
-	private int kmp(char[] text, char[] pat, out int pos){
+	
+	private int[] kmp(char[] text, char[] pat){
 		
 		int n = pat.length;
 		int i = 0;
@@ -20,7 +21,7 @@ namespace Kmp{
 		//searching
 		i = 0;
 		j = 0;
-		int matches = 0;
+		int[] matches = {};
 		while(i < text.length){
 			while(j >= 0 && (text[i] != pat[j])){
 				j = N[j];
@@ -29,10 +30,7 @@ namespace Kmp{
 			j++;
 		
 			if(j == n){
-				matches++;
-				if (matches == 1 ){
-					pos = i-j;
-				}
+				matches += i-j;
 				j = N[j];
 			}
 		}

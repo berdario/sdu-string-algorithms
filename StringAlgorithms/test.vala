@@ -7,9 +7,34 @@ void test(){
 
 	long len, rint;
 	var contents = new FileContents();
-	//string[] filenames = contents.files;
 	string name, file_content;
 	bool outcome;
+	int[] lengths = {4,8,16};//,128};
+	string pattern_repr;
+	
+	/*foreach (string file_content in contents){
+		text = new String(file_content, Algorithms.SHIFT_AND);
+		pattern = new String("aaaa");
+		int[] pos_res = text.match(pattern);
+		print("shiftand found %d matches\n", pos_res.length);
+		foreach (int resp in pos_res[0:100]){
+			print(@"$resp ");
+		}
+		//print("results: %d\n",text.match(pattern, out poss));
+		pos_res = BruteForce.bruteforce(text.data,pattern.data);
+		print("\nbrute found %d matches\n", pos_res.length);
+		foreach (int resp in pos_res[0:100]){
+			print(@"$resp ");
+		}
+		string temp = file_content[99984:100000];
+		print("\n%s \nlength:%d\n",temp,(int)temp.length);
+		break;
+		//string[] divs = file_content.split_set(" ope");
+		//print("should be: %d\n",divs.length);
+	}
+	Thread.usleep(1000000000);
+	assert(false);*/
+	
 	foreach (string[] file in contents){
 		name = file[0];
 		file_content = file[1];
@@ -18,36 +43,51 @@ void test(){
 			error("I have problems handling a file longer than 2147483647 chars");
 		}
 		rint = Test.rand_int_range((int)len/2,(int)len*7/8);
-		pattern = new String(file_content[rint:rint+len/8]);
+		rint -= rint % 32;
+		assert ((rint %32)==0);
 		
-		message(@"position of the selected pattern for file $name: $rint\n");
-		
-		int[] result = new int[4];
-		int[] pos = new int[4];
-		for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
-			if (alg == Algorithms.SHIFT_AND){
-				continue;
+		foreach (int pattern_len in lengths){
+
+			pattern = new String(file_content[rint:rint+pattern_len]);
+			if (pattern_len <=128){
+				pattern_repr = (string) pattern.data;
+			} else{
+				pattern_repr = "";
+			}
+						
+			message(@"position of the selected pattern for file $name: $rint\n lenght of the pattern: $pattern_len, pattern: $pattern_repr\n");
+			
+			//int[][] result = new int[][4];
+			int[] result;
+			int[] num_results = new int[4];
+			for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
+				if (alg == Algorithms.SHIFT_AND){
+					//continue;
+					ShiftAnd.masks = null;
+				}
+				
+				text = new String(file_content,(Algorithms) alg);
+				
+				timer.reset();
+				timer.start();
+				
+				result = text.match(pattern);
+				timer.stop();
+				
+				num_results[alg] = result.length;
+				outcome = num_results[alg]>0;
+				message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(num_results[alg]) time(s) ":"")+"in the text");
+				//if (outcome) message(@"the position of the first match is at char number $(pos[alg])");
+				message("computation performed in %f milliseconds\n",timer.elapsed()*1000);
+				
+				//Thread.usleep(2000000);
+				
 			}
 			
-			text = new String(file_content,(Algorithms) alg);
-			
-			timer.reset();
-			timer.start();
-			
-			result[alg] = text.match(pattern, out pos[alg]);
-			timer.stop();
-			
-			outcome = result[alg]>0;
-			message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(result[alg]) time(s) ":"")+"in the text");
-			if (outcome) message(@"the position of the first match is at char number $(pos[alg])");
-			message("computation performed in %f milliseconds\n",timer.elapsed()*1000);
-			
-			//Thread.usleep(2000000);
-			
+			assert(num_results[Algorithms.KMP] == num_results[Algorithms.BRUTE_FORCE]);
+			assert(num_results[Algorithms.BMH] == num_results[Algorithms.BRUTE_FORCE]);
+			//assert(num_results[Algorithms.SHIFT_AND] == num_results[Algorithms.BRUTE_FORCE]);
 		}
-		assert(result[Algorithms.KMP] == result[Algorithms.BRUTE_FORCE]);
-		assert(result[Algorithms.BMH] == result[Algorithms.BRUTE_FORCE]);
-		//assert(result[Algorithms.SHIFT_AND] == result[Algorithms.BRUTE_FORCE]);
 	}
 	
 	/*pattern = new String("test");
@@ -78,8 +118,8 @@ private class FileContents {
 		"pi.txt",
 		"random.txt",
 		"E.coli",
-		"y.tab.c",
-		"string.ps.gz"
+		"y.tab.c"
+		//"string.ps.gz"
 	};
 		
 	public FileContents iterator(){

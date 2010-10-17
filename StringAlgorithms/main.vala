@@ -34,7 +34,7 @@ namespace Strings{
 		
 		public char[] data;
 		
-		public delegate int Alg(char[] text, char[] pat, out int pos);
+		public delegate int[] Alg(char[] text, char[] pat);
 		private delegate bool ContainsAlg(char[] text, char[] pat);
 		
 		private struct AlgWrapper{
@@ -68,8 +68,8 @@ namespace Strings{
 		}
 						
 		private Alg match_alg;
-		public int match(String o, out int pos){
-			return match_alg(data, o.data, out pos);
+		public int[] match(String o){
+			return match_alg(data, o.data);
 		}
 				
 		ContainsAlg contains_alg;

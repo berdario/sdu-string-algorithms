@@ -3,10 +3,10 @@ using Gee;
 namespace ShiftAnd{
 	HashMap<int, ArrayList<bool>> masks = null;
 		
-			private int shift_and(char[] text, char[] pat, out int pos)
-				requires (pat.length > 1)
-				{
-				int result = 0;
+			private int[] shift_and(char[] text, char[] pat)
+				requires (pat.length > 1) {
+				
+				int[] matches = {};
 				int m = text.length;
 				int n = pat.length;
 				bool[,] table = new bool[m+1,n];
@@ -51,20 +51,22 @@ namespace ShiftAnd{
 					for (int i=0; i<n; i++){
 						//stdout.printf("%d %d\n",n,(j_mask!=null)?j_mask.size:0);
 						//bool mask_result = (j_mask[i]==null) ? j_mask[i] : false;
+						/*if (j_mask!=null){
+							print(@"$(j_mask.size) $i $n\n");
+							assert(j_mask.size>i);
+						}*/
 						bool temp = (j_mask!=null)? j_mask[i] : false;
 						table[j,i] = column[i] && temp;
+						
 					}
 					
 					if (table[j,n-1]){
-						result++;
-						if (result == 1){
-							pos = j-n+1;
-						}
+						 matches += j-n+1;
 					}
 				}
 				
 				
-				return result;
+				return matches;
 				
 			}
 			

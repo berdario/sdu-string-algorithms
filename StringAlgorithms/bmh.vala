@@ -1,7 +1,8 @@
 using Gee;
 	
 namespace Bmh{
-	private int bmh(char[] text, char[] pat, out int pos){
+	
+	private int[] bmh(char[] text, char[] pat){
 		int n = pat.length;
 		int m = text.length;
 		
@@ -42,7 +43,7 @@ namespace Bmh{
 
 		//Preprocessing for good suffix
 		
-		int matches = 0;
+		int[] matches = {};
 		
 		int k = 0;
 		int shift, i, h;
@@ -50,16 +51,13 @@ namespace Bmh{
 		while (k<=m-n){
 			i = n-1;
 			h = k+n-1;
-			while (i > 0 && pat[i] == text[h]){
+			while (i >= 0 && pat[i] == text[h]){
 				i--;
 				h--;
 			}
 			
-			if (i == 0){
-				matches++;
-				if (matches == 1){
-					pos = k;
-				}
+			if (i < 0){
+				matches += k;
 			} 
 			
 			shift = a[text[k+n-1]];

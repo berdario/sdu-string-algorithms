@@ -18,8 +18,8 @@ namespace BruteForce{
 		
 		}
 		
-		private int bruteforce(char[] text, char[] pat, out int pos){
-			int matches = 0;
+		private int[] bruteforce(char[] text, char[] pat){
+			int[] matches = {};
 			int i=0 ,j;
 			foreach (char c in text){
 				j=i;
@@ -29,11 +29,8 @@ namespace BruteForce{
 					}
 					j++;
 				}
-				if (j-i>=pat.length-1 && text[j]!=pat[j-i]){
-					matches++;
-					if (matches == 1){
-						pos = i;
-					}
+				if (j-i==pat.length ){//&& text[j]!=pat[j-i]){
+					matches+=i;
 				}
 				i++;
 			}
