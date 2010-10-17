@@ -56,7 +56,6 @@ namespace Strings{
 			algs[Algorithms.SHIFT_AND] = AlgWrapper(){ alg = shift_and };
 			
 			contains_algs[Algorithms.BRUTE_FORCE] = ContainsAlgWrapper(){ alg = bruteforce_contains };
-			//contains_algs[Algorithms.SHIFT_AND] = ContainsAlgWrapper(){ alg = (o) => {return ShiftAnd.shift_and(data, o.data, null)>0;} };
 		}
 		
 		public String(string b, Algorithms Algorithm = Algorithms.BRUTE_FORCE) {

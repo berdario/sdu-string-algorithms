@@ -18,10 +18,10 @@ void test(){
 	string pattern_repr;
 	
 	double[,] total_results = {	{0,0,0,0},
-									{0,0,0,0},
-									{0,0,0,0},
-									{0,0,0,0},
-									{0,0,0,0}};
+								{0,0,0,0},
+								{0,0,0,0},
+								{0,0,0,0},
+								{0,0,0,0}};
 	
 	foreach (string[] file in contents){
 		name = file[0];
@@ -51,10 +51,8 @@ void test(){
 			}
 						
 			message(@"position of the selected pattern for file $name: $rint\n lenght of the pattern: $pattern_len, pattern: $pattern_repr\n");
-			
-			//int[][] result = new int[][4];
-			
-			int[] result;
+						
+			int[] result = null;
 			int[] num_results = new int[4];
 			for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
 				
@@ -75,13 +73,7 @@ void test(){
 				
 				results[i,alg] = time;
 				total_results[i,alg] += time;
-				/*num_results[alg] = result.length;
-				outcome = num_results[alg]>0;
-				message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(num_results[alg]) time(s) ":"")+"in the text");
-				//if (outcome) message(@"the position of the first match is at char number $(pos[alg])");
-				message("computation performed in %f milliseconds\n",time);*/
-				
-				//Thread.usleep(2000000);
+				num_results[alg] = result.length;
 				
 			}
 			
@@ -117,7 +109,7 @@ private class FileContents {
 	
 	
 	public string[]? next_value(){
-		//TODO implements with the read_until_async
+		//TODO implement with read_until_async
 		string content = "";
 		string[] result = new string[2];
 		
@@ -150,7 +142,7 @@ private class FileContents {
 }
 
 public void output(string filename, double[,] results){
-	var file = File.new_for_path("../../../results/"+filename+"_results");
+	var file = File.new_for_path("../../../results/"+filename+"_results"); //TODO this works for our IDE setup, but it's not a good approach
 	try{
 		var file_stream = file.create (FileCreateFlags.NONE);
 		if (file.query_exists()){}//everything ok
@@ -167,7 +159,7 @@ public void output(string filename, double[,] results){
 		
 		data_stream.put_string(data);
 	} catch (Error e){
-		debug("WTF");
+		debug("\nProbably there is alread a copy of some old results?");//TODO overwrite if needed
 	}
 	
 }

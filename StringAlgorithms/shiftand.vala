@@ -1,7 +1,5 @@
-using Gee;
-
 namespace ShiftAnd{
-	public int[] shift_and(char[] text, char[] pat)//, long[] masks = (long*) null)
+	public int[] shift_and(char[] text, char[] pat)
 		requires (pat.length > 1) {
 			
 		if (pat.length > 63){
@@ -28,9 +26,9 @@ namespace ShiftAnd{
 			column <<= 1;
 			column |= 0x00000001;
 			
-			column &= masks[(uint8)text[i]]; //what happens with a binary index?
+			column &= masks[(uint8)text[i]]; 
 			
-			//print("masked: %lX  %lX %lX\nn: %d\n",column, max_mask, column & max_mask, n);
+			//debug("masked: %lX  %lX %lX\nn: %d\n",column, max_mask, column & max_mask, n);
 			if (((column & max_mask) >> n-1) == 1){
 				matches += i-n+1;
 			}

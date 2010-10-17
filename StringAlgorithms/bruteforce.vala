@@ -29,7 +29,7 @@ namespace BruteForce{
 					}
 					j++;
 				}
-				if (j-i==pat.length ){//&& text[j]!=pat[j-i]){
+				if (j-i==pat.length ){
 					matches+=i;
 				}
 				i++;

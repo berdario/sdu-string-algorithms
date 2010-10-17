@@ -1,5 +1,3 @@
-using Gee;
-	
 namespace Bmh{
 	
 	private int[] bmh(char[] text, char[] pat){
@@ -11,7 +9,7 @@ namespace Bmh{
 		int ALPHABET_SIZE = 1024;
 		int[] a = new int[ALPHABET_SIZE];
 		
-		//Preprocessing for bad characters
+		//Preprocessing
 		
 		for(int i = 0; i < ALPHABET_SIZE; i++){
 		    a[i] = -1;
@@ -22,27 +20,7 @@ namespace Bmh{
 		        a[(uint8)pat[j]] = j+1;
 		    }
 		}
-		
-		
-		/*
-		//int[] a = new int[pat.length/2];
-		var a = new HashMap<char, int>();
-		char[] encountered = {};
-		char current_char;
-		for(int j = n - 1; j>= 0; j-- ){
-			if (!current_char in encountered){
-				a[pat[j]] = m-j-1;
-				stdout.printf("%i\n", j);
-				encountered += pat[j];
-			}
-		}
-		
-		return a['q']??-1
-		*/
-	
-
-		//Preprocessing for good suffix
-		
+				
 		int[] matches = {};
 		
 		int k = 0;
@@ -61,7 +39,8 @@ namespace Bmh{
 			} 
 			
 			shift = a[(uint8)text[k+n-1]];
-			//message(@"k: $k letter: $(text[k]) eowletter: $(text[k+n-1]) shift: $((shift != -1) ? n-shift : n)");
+			
+			//debug(@"k: $k letter: $(text[k]) eowletter: $(text[k+n-1]) shift: $((shift != -1) ? n-shift : n)");
 			
 			k += (shift != -1) ? n-shift : n;
 		}

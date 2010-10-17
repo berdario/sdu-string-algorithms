@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug</OutputPath>
     <CodeGeneration>
-      <CodeGeneration WarningLevel="Normal" WarningsAsErrors="false" OptimizationLevel="0" ExtraCompilerArguments="" DefineSymbols="DEBUG MONODEVELOP" EnableMultithreading="false" ctype="ValaCompilationParameters" />
+      <CodeGeneration WarningLevel="Normal" WarningsAsErrors="false" OptimizationLevel="0" ExtraCompilerArguments="--Xcc=O10" DefineSymbols="DEBUG MONODEVELOP" EnableMultithreading="false" ctype="ValaCompilationParameters" />
     </CodeGeneration>
     <SourceDirectory>.</SourceDirectory>
     <Output>
@@ -34,10 +34,106 @@
       <Includes>
         <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
         <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
       </Includes>
     </Includes>
     <Libs>
       <Libs>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
         <Lib>gio-2.0</Lib>
         <Lib>gio-unix-2.0</Lib>
       </Libs>
@@ -55,6 +151,78 @@
     <Build>
       <Build target="Bin" />
     </Build>
+    <Includes>
+      <Includes>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10\vapi</Include>
+        <Include>..\..\..\..\..\..\usr\share\vala-0.10</Include>
+      </Includes>
+    </Includes>
+    <Libs>
+      <Libs>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+        <Lib>gio-2.0</Lib>
+        <Lib>gio-unix-2.0</Lib>
+      </Libs>
+    </Libs>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.vala" />
