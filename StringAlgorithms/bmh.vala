@@ -18,8 +18,8 @@ namespace Bmh{
 		}
 		
 		for(int j = n-2; j>= 0; j-- ){
-		    if(a[pat[j]] < 0){
-		        a[pat[j]] = j+1;
+		    if(a[(uint8)pat[j]] < 0){
+		        a[(uint8)pat[j]] = j+1;
 		    }
 		}
 		
@@ -60,7 +60,7 @@ namespace Bmh{
 				matches += k;
 			} 
 			
-			shift = a[text[k+n-1]];
+			shift = a[(uint8)text[k+n-1]];
 			//message(@"k: $k letter: $(text[k]) eowletter: $(text[k+n-1]) shift: $((shift != -1) ? n-shift : n)");
 			
 			k += (shift != -1) ? n-shift : n;

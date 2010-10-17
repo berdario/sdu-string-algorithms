@@ -1,10 +1,9 @@
 using Strings;
 	
-int[] lengths;
+int?[] lengths;
 	
 void test(){
-	//TODO be careful
-	lengths = {4,8,16};//,128};
+	lengths = {4,8,16,128, null};
 	
 	Timer timer = new Timer();
 	String pattern;
@@ -13,45 +12,33 @@ void test(){
 	long len, rint;
 	var contents = new FileContents();
 	string name, file_content;
-	bool outcome;
 	int pattern_len;
+	double time;
 	
 	string pattern_repr;
 	
-	/*foreach (string file_content in contents){
-		text = new String(file_content, Algorithms.SHIFT_AND);
-		pattern = new String("aaaa");
-		int[] pos_res = text.match(pattern);
-		print("shiftand found %d matches\n", pos_res.length);
-		foreach (int resp in pos_res[0:100]){
-			print(@"$resp ");
-		}
-		//print("results: %d\n",text.match(pattern, out poss));
-		pos_res = BruteForce.bruteforce(text.data,pattern.data);
-		print("\nbrute found %d matches\n", pos_res.length);
-		foreach (int resp in pos_res[0:100]){
-			print(@"$resp ");
-		}
-		string temp = file_content[99984:100000];
-		print("\n%s \nlength:%d\n",temp,(int)temp.length);
-		break;
-		//string[] divs = file_content.split_set(" ope");
-		//print("should be: %d\n",divs.length);
-	}
-	Thread.usleep(1000000000);
-	assert(false);*/
+	double[,] total_results = {	{0,0,0,0},
+									{0,0,0,0},
+									{0,0,0,0},
+									{0,0,0,0},
+									{0,0,0,0}};
 	
 	foreach (string[] file in contents){
 		name = file[0];
 		double[,] results = new double[lengths.length,Algorithms.BRUTE_FORCE.length()];
+		
 		file_content = file[1];
+		
 		len = file_content.length;
 		if (len > 2147483647){
 			error("I have problems handling a file longer than 2147483647 chars");
 		}
+		
+		lengths[4] = (int) len/8;
+		
 		rint = Test.rand_int_range((int)len/2,(int)len*7/8);
 		rint -= rint % 32;
-		assert ((rint %32)==0);
+		assert ((rint % 32)==0);
 		
 		for (int i=0; i<lengths.length; i++ ){
 			pattern_len = lengths[i];
@@ -70,25 +57,29 @@ void test(){
 			int[] result;
 			int[] num_results = new int[4];
 			for (int alg=0; alg < Algorithms.BRUTE_FORCE.length(); alg++){
-				if (alg == Algorithms.SHIFT_AND){
-					//continue;
-					ShiftAnd.masks = null;
-				}
 				
 				text = new String(file_content,(Algorithms) alg);
 				
-				timer.reset();
-				timer.start();
+				time = 0;
+				int k;
+				for (k=0; k<5 || time<5000 ; k++ ){
+					timer.reset();
+					timer.start();
+					
+					result = text.match(pattern);
+					timer.stop();
+					time += timer.elapsed()*1000;
+				}
 				
-				result = text.match(pattern);
-				timer.stop();
+				time/= (double)k;
 				
-				results[i,alg] = timer.elapsed()*1000;
-				num_results[alg] = result.length;
+				results[i,alg] = time;
+				total_results[i,alg] += time;
+				/*num_results[alg] = result.length;
 				outcome = num_results[alg]>0;
 				message("pattern is"+ (outcome?"":" not") +" contained "+(outcome?@"$(num_results[alg]) time(s) ":"")+"in the text");
 				//if (outcome) message(@"the position of the first match is at char number $(pos[alg])");
-				message("computation performed in %f milliseconds\n",timer.elapsed()*1000);
+				message("computation performed in %f milliseconds\n",time);*/
 				
 				//Thread.usleep(2000000);
 				
@@ -96,26 +87,12 @@ void test(){
 			
 			assert(num_results[Algorithms.KMP] == num_results[Algorithms.BRUTE_FORCE]);
 			assert(num_results[Algorithms.BMH] == num_results[Algorithms.BRUTE_FORCE]);
-			//assert(num_results[Algorithms.SHIFT_AND] == num_results[Algorithms.BRUTE_FORCE]);
+			assert(num_results[Algorithms.SHIFT_AND] == num_results[Algorithms.BRUTE_FORCE] || i==3 || i==4);
 		}
 		
 		output(name,results);
 	}
-	
-	/*pattern = new String("test");
-	text = new String("bycjfdsbknfdsgj,gnv,vjyncghhnfjhvdbnfchdjhjdfgkfhkcnjhcbfkgxcjbgsnjdbc,fxcnjgchdfbxycnv slfgbdmfxnb ,mjkdtestbsfsluifgsnldgjj"
-		,Algorithms.BMH);
-	
-	int result;
-	int pos;
-	timer.reset();
-	timer.start();
-	result = text.match(pattern,out pos);
-	timer.stop();
-	stdout.printf("\nstring a is"+ ((result>0)?"":" not") +" contained "+((result>0)?@"$result time(s) ":"")+"in string b\n");
-	if (result>0) stdout.printf(@"the position of the first match is at char number $pos\n");
-	stdout.printf("computation performed in %f milliseconds\n",timer.elapsed()*1000);
-	assert(result>0);*/
+	output("total",total_results);
 	
 }
 
@@ -130,8 +107,8 @@ private class FileContents {
 		"pi.txt",
 		"random.txt",
 		"E.coli",
-		"y.tab.c"
-		//"string.ps.gz"
+		"y.tab.c",
+		"string.ps.gz"
 	};
 		
 	public FileContents iterator(){

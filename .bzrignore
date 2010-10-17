@@ -25,3 +25,7 @@ results/lcet10.txt_results
 results/pi.txt_results
 results/random.txt_results
 results/y.tab.c_results
+results/total_results
+graphs/total_results.eps
+results/string.ps.gz_results
+graphs/string.ps.gz_results.eps

@@ -1,124 +1,67 @@
 using Gee;
 
 namespace ShiftAnd{
-	HashMap<int, ArrayList<bool>> masks = null;
+	public int[] shift_and(char[] text, char[] pat)//, long[] masks = (long*) null)
+		requires (pat.length > 1) {
+			
+		if (pat.length > 63){
+			return {};
+		}
 		
-			private int[] shift_and(char[] text, char[] pat)
-				requires (pat.length > 1) {
-				
-				int[] matches = {};
-				int m = text.length;
-				int n = pat.length;
-				bool[,] table = new bool[m+1,n];
-				//var table = new ArrayList<ArrayList<bool>>();
-				masks = masks ?? create_masks(pat);
-				bool[] column = new bool[n];
-
-				for (int i = 0; i<n+1; i++){
-					table[0,i] = false;
+		int[] matches = {};
+		int m = text.length;
+		int n = pat.length;
+		
+		long max_mask = 0x00000001;
+		max_mask <<= n;
+		max_mask--;
+		
+		if (n > 63){
+			error("not yet\n");
+		}
+		
+		long column = 0x00000001;
+		long[] masks = (long[]) null;
+		masks = masks ?? preprocess(pat);
+		
+		for (int i=1; i <= m; i++ ){
+			column <<= 1;
+			column |= 0x00000001;
+			
+			column &= masks[(uint8)text[i]]; //what happens with a binary index?
+			
+			//print("masked: %lX  %lX %lX\nn: %d\n",column, max_mask, column & max_mask, n);
+			if (((column & max_mask) >> n-1) == 1){
+				matches += i-n+1;
+			}
+			
+		}
+		return matches;
+	}
+	
+	public long[] preprocess(char[] pat)
+		requires (pat.length < 64) {
+		
+		long max_mask = 0x00000001;
+		max_mask <<= pat.length;
+		
+		long[] masks = new long[uint8.MAX+1]; //let's cover all possible values
+		for (int i=0; i < uint8.MAX; i++){
+			masks[i] = 0x00000000;
+		}
+		
+		foreach (char c in pat){
+			long mask = 0x00000000;
+			foreach (char c2 in pat){
+				if (c == c2){
+					mask |= max_mask;
 				}
-				
-				for (int j = 1; j<=m; j++){
-
-					column[0] = true;
-					//TODO check pat > 1
-					for (int i=1; i<n; i++){
-						column[i] = table[j-1,i-1];
-						//if (table[j-1,i]) stdout.printf("1 ");
-						//else stdout.printf("0 ");
-					}
-					//stdout.printf("\n");
-					/*column = tmp_column[1:n];
-					//column[n-1] = tmp_column[0];
-					column += tmp_column[0];*/
-					
-
-															
-					//print_array(column);
-
-					//var j_mask = masks[text[j]] ?? new ArrayList<bool>();
-					var j_mask = masks[text[j]];
-					/*stdout.printf(@"$(text[j])\n");
-					if (j_mask != null){
-						stdout.printf(@"$(j_mask.size)\n");
-						foreach (bool b in j_mask){
-							if (b) stdout.printf("1 ");
-							else stdout.printf("0 ");
-						}
-						stdout.printf("\n");
-					}*/
-
-					for (int i=0; i<n; i++){
-						//stdout.printf("%d %d\n",n,(j_mask!=null)?j_mask.size:0);
-						//bool mask_result = (j_mask[i]==null) ? j_mask[i] : false;
-						/*if (j_mask!=null){
-							print(@"$(j_mask.size) $i $n\n");
-							assert(j_mask.size>i);
-						}*/
-						bool temp = (j_mask!=null)? j_mask[i] : false;
-						table[j,i] = column[i] && temp;
+				mask >>= 1;
+			}
 						
-					}
-					
-					if (table[j,n-1]){
-						 matches += j-n+1;
-					}
-				}
-				
-				
-				return matches;
-				
-			}
-			
-			public void print_table(bool[,] table){
-				for (int j=0; j<=table.length[0]; j++){
-					for (int i=0; i<table.length[1]; i++){
-						if (table[j,i]) stdout.printf("1 ");
-						else stdout.printf("0 ");
-					}
-					stdout.printf("\n");
-				}
-			}
-			public void print_array(bool[] array){
-				for (int i=0; i<array.length; i++){
-					if (array[i]) stdout.printf("1 ");
-					else stdout.printf("0 ");
-				}
-				stdout.printf("\n");
-			}
-			
-			public void preprocess(char[] pat){
-				masks = create_masks(pat);
-			}
-			
-			private HashMap<int, ArrayList<bool>> create_masks(char[] pat){
-				var result = new HashMap<int, ArrayList<bool>>();
-				char[] encountered = {};
-				//bool[] mask = new bool[n];
-				foreach (char c in pat){
-					var mask = new ArrayList<bool>();
-					if (!(c in encountered)){
-						//int i = 0;
-						foreach (char cpat in pat){
-							//stdout.printf(@"$cpat $i\n");
-							mask.add(c==cpat);
-							//mask[i] = c==cpat;
-							//i++;
-						}
-						/*stdout.printf("%d %d\n",i, mask.size);
-						mask.clear();
-						foreach (bool b in mask){
-							if (b) stdout.printf("1 ");
-							else stdout.printf("0 ");
-						}
-						stdout.printf("\n");*/
-						
-						//ArrayList<bool> mask_glib_array = new Array(false,false,sizeof(bool));
-						result[c] = mask;
-						encountered += c;
-					}
-				}
-				return result;
-			}
+			masks[c] = mask;
+		}
+		return masks;
+	}
 }
 
